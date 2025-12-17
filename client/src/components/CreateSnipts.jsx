@@ -1,21 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const CreateSnipts = () => {
   // ✅ Hooks at top level
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
+  const [snippets, setSnippets] = useState([]);
+
 
   const handleCreateSnipts = async (e) => {
     e.preventDefault();
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/snippets/create",
+        "http://localhost:3000/api/v1/snippets/create",
         { title, code }
       );
 
-      console.log(res);
+      console.log(res.data);
 
       // Optional: clear form
       setTitle("");
@@ -24,6 +26,20 @@ const CreateSnipts = () => {
       console.error("Error occurred", error);
     }
   };
+
+  useEffect(() => {
+    const fetchSnippets = async () => { 
+      try {
+        const res = await axios.get("http://localhost:3000/api/v1/snippets");
+        setSnippets(res.data);
+        
+      } catch (error) {
+        console.log("error while fetching snippet", error)
+        
+      }
+    };
+    fetchSnippets();
+  }, []);
 
   return (
     <div className="mt-10">
@@ -50,6 +66,14 @@ const CreateSnipts = () => {
           Create Snippet
         </button>
       </form>
+
+    {
+      Object.values(snippets).map((snippet) => {
+        <div className="p-3 border rounded">
+          <h1 className="font-bold text-xl ">{snippet.title}</h1>
+        </div>
+      })
+    }
     </div>
   );
 };

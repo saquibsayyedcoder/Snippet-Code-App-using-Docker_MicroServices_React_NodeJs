@@ -5,7 +5,7 @@ import CreateSnipts from './components/CreateSnipts'
 
 const App = () => {
   return (
-   <main>
+   <main className='container max-w-4xl mx-auto p-4'>
     <Navbar/>
     <CreateSnipts/>
    </main>
