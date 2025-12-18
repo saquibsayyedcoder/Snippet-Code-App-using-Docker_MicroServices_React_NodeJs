@@ -16,17 +16,27 @@ return res.status(201).json({
 };
 
 export const getSnippet = (req, res) => {
-    const {id} = req.params;
-    const snip = snippets[id];       
-    if(!snip){
-        return res.status(404).json({
-            success: false,         
-            message: "Snippets not found",
-        });
-    }       
-    return res.status(200).json({
-        success: true,
-        message: "Snippet fetched successfully",
-        data: snip,
+  const { id } = req.params;
+  const snip = snippets[id];
+
+  if (!snip) {
+    return res.status(404).json({
+      success: false,
+      message: "Snippet not found",
     });
-}
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: snip,
+  });
+};
+
+
+export const getAllSnippets = (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "All snippets fetched successfully",
+    data: Object.values(snippets),
+  });
+};
